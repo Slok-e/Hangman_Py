@@ -4,7 +4,7 @@ from Animals import Animals
 
 def get_words():
     word = random.choice(Animals)
-    return word.upper
+    return word.upper()
 
 def play(word):
     name = input("Welcome, what is your name: ")
@@ -13,8 +13,9 @@ def play(word):
     guessed_letters = []
     guessed_words = []
     tries = 6
-    print(f"Welcome, {name}.\n Lets play a game of Hangman")
+    print(f"Welcome, {name} \n Lets play a game of Hangman")
     print(display_hangman(tries))
+    print(word_completion)
     print("\n")
     while not guessed and tries > 0:
         guess = input("Please guess a letter or Word: ").upper()
@@ -26,7 +27,7 @@ def play(word):
                 tries -= 1
                 guessed_letters.append(guess)
             else:
-                print(f" Good job, {guess}, is in the word.")
+                print(" Good job,", guess, " is in the word.")
                 guessed_letters.append(guess)
                 word_as_list = list(word_completion)
                 indices = [i for i, letter in enumerate(word) if letter == guess]
@@ -36,27 +37,24 @@ def play(word):
                 if "_" not in word_completion:
                     guessed = True
         elif len(guess) == len(word) and guess.isalpha():
-        
+            if guess in guessed_words:
+                print(f"You already guessed the word {guess}")
+            elif guess != word:
+                print(f"{guess}, is not the word.")
+                tries -= 1
+                guessed_words.append(guess)
+            else:
+                guessed = True
+                word_completion = word
         else:
             print("Not a Valid Guess")
-            print(display_hangman(tries))
-            print(word_completion)
-            print("\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        print(display_hangman(tries))
+        print(word_completion)
+        print("\n")
+    if guessed:
+        print("Good job you guessed the word!")
+    else:
+        print(f"Sorry, you ran out of tries. The word was {word}. Maybe next time!")
 
 
 def display_hangman(tries):
@@ -132,3 +130,14 @@ def display_hangman(tries):
                 """
     ]
     return stages[tries]
+
+
+def main():
+    word = get_words()
+    play(word)
+    while input("Play again? (Y/N) ").upper() == "Y":
+        word = get_words
+        play(word)
+
+if __name__ == '__main__':
+    main()
