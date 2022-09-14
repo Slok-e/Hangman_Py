@@ -2,6 +2,8 @@ import logging
 import random
 from Animals import Animals
 
+logging.basicConfig()
+
 def get_words():
     word = random.choice(Animals)
     return word.upper()
@@ -135,7 +137,7 @@ def display_hangman(tries):
 def main():
     word = get_words()
     play(word)
-    while input("Play again? (Y/N) ").upper() == "Y":
+    while input("Play again? (Y/n) ").upper() == "Y":
         word = get_words
         play(word)
 
